@@ -52,9 +52,29 @@ let add = function (username) {
         })
     })
 }
+let update = function(value) {
+    const sql = 'update `db_survey`.`tb_demo_user` set `username`="' + value.username + '" where `userid`="' + value.userid+ '";'
+
+    return new Promise((resolve) => {
+        pool.getConnection((err, connection) => {
+        if (err) {
+            throw { error: err}
+        }
+        connection.query(sql,  (error, results, fields) => {
+            // 如果有错误就抛出
+            if (error) throw { error: error};
+            resolve({ results })
+            // 结束会话
+            connection.release();
+            })
+        })
+    })
+
+}
 
 
 module.exports = {
     query,
-    add
+    add,
+    update
 }

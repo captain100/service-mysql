@@ -3,7 +3,7 @@ const app = new Koa();
 const bodyParser = require('koa-bodyparser');
 const { port } = require('./config');
 // 数据库连接
-const { query, add } = require('./mysql-middle');
+const { query, update } = require('./mysql-middle');
 // 解析post请求
 app.use(bodyParser());
 
@@ -17,9 +17,10 @@ app.use(async ctx => {
         ctx.body = JSON.stringify(data)
     }
 
-    if (ctx.url === '/adduser') {
-        const { username } = ctx.request.body;
-        const { results } = await add(username);
+    if (ctx.url === '/updateusername') {
+        const { username, userid } = ctx.request.body;
+        
+        const { results } = await update({username, userid});
         ctx.body = JSON.stringify(results)
     }
 
