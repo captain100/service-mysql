@@ -12,7 +12,8 @@ app.use(async ctx => {
         ctx.body = '11111'
     }
     if (ctx.url === '/query') {
-        const { data } = await query();
+        const { hospital } = ctx.request.body;
+        const { data } = await query(hospital);
         ctx.body = JSON.stringify(data)
     }
 

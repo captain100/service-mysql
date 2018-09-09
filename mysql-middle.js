@@ -17,8 +17,8 @@ const pool = mysql.createPool({
     database
 })
 
-let query = function () {
-    const sql = 'SELECT * FROM `db_survey`.`tb_demo_user`';
+let query = function (hospital) {
+    const sql = "SELECT * FROM `db_survey`.`tb_demo_user` where `hospital` LIKE '" + hospital +"'";
     return new Promise((resolve) => {
         pool.getConnection((err, connection) => {
         if(err) {
