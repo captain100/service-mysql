@@ -10,6 +10,7 @@ const {
 
 // 数据库连接池
 const pool = mysql.createPool({
+    connectionLimit : 10,
     host: db_host,
     user: db_user,
     password: db_password,
@@ -25,11 +26,11 @@ let query = function (hospital) {
             throw { error: err}
         }
         connection.query(sql,  (error, results, fields) => {
+            connection.release();
+            if (error) throw { error: error};
             return resolve({ data: results })
             // 结束会话
-            connection.release();
             // 如果有错误就抛出
-            if (error) throw { error: error};
             })
         })
     })
@@ -44,10 +45,10 @@ let add = function (username) {
         }
         connection.query(sql,  (error, results, fields) => {
             // 如果有错误就抛出
+            connection.release();
             if (error) throw { error: error};
             resolve({ results })
             // 结束会话
-            connection.release();
             })
         })
     })
@@ -61,11 +62,11 @@ let update = function(value) {
             throw { error: err}
         }
         connection.query(sql,  (error, results, fields) => {
+            connection.release();
             // 如果有错误就抛出
             if (error) throw { error: error};
             resolve({ results })
             // 结束会话
-            connection.release();
             })
         })
     })
