@@ -19,7 +19,8 @@ const pool = mysql.createPool({
 })
 
 let query = function (hospital) {
-    const sql = "SELECT * FROM `db_survey`.`tb_demo_user` where `hospital` LIKE '" + hospital +"'";
+    const sql = 'SELECT * FROM `db_survey`.`tb_demo_user` where `hospital` LIKE "' + hospital +'" and username like "\\"\\""';
+    console.log(sql)
     return new Promise((resolve) => {
         pool.getConnection((err, connection) => {
         if(err) {
@@ -62,8 +63,8 @@ let update = function(value) {
             throw { error: err}
         }
         connection.query(sql,  (error, results, fields) => {
-            connection.release();
             // 如果有错误就抛出
+            connection.release();
             if (error) throw { error: error};
             resolve({ results })
             // 结束会话
